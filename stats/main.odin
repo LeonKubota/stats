@@ -225,19 +225,33 @@ main :: proc() {
         line_number += 1
     }
 
-    // Printing
-    if options.category == 0 && options.c == 0 {
-        print_all(categories)
-    } else {
-        // Check if category exists
-        if options.category > len(categories) {
-            fmt.printf("error: category of index `%i` does not exist.\n", options.category)
-            return
-        } else if options.c > len(categories) {
-            fmt.printf("error: category of index `%i` does not exist.\n", options.c)
-            return
+    if options.f || options.failed { // Print failed
+        if options.category == 0 && options.c == 0 {
+            print_all_failed(categories)
+        } else {
+            // Check existance
+            if options.category > len(categories) {
+                fmt.println("error: category of index `%i` does not exist.\n", options.category)
+                return
+            } else if options.c > len(categories) {
+                fmt.println("error: category of index `%i` does not exist.\n", options.c)
+                return
+            }
+            print_single_failed(categories[options.category + options.c - 1])
         }
-
-        print_single(categories[options.category + options.c - 1]) // -1 for "human" indexing
+    } else { // Print all
+        if options.category == 0 && options.c == 0 {
+            print_all(categories)
+        } else {
+            // If category doesn't exist
+            if options.category > len(categories) {
+                fmt.printf("error: category of index `%i` does not exist.\n", options.category)
+                return
+            } else if options.c > len(categories) {
+                fmt.printf("error: category of index `%i` does not exist.\n", options.c)
+                return
+            }
+            print_single(categories[options.category + options.c - 1]) // -1 for "human" indexing
+        }
     }
 }

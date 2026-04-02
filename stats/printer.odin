@@ -29,6 +29,39 @@ print_all :: proc(categories: [dynamic]Category) {
     }
 }
 
+print_all_failed :: proc(categories: [dynamic]Category) {
+    e, s, c: int
+
+    for category in categories {
+        for subcategory in category.subcategories {
+            for exercise in subcategory.exercises {
+                if exercise.tries != 0 && exercise.score != 1.0 {
+                    //fmt.println(exercise, i, n)
+                    fmt.printf("% 2i, % 2f - %s, \n",
+                        n,
+                        subcategory.index - 0.1,
+                        category.subcategories[],
+                    )
+                    /*
+                    fmt.printf("% 2i, % 4.2f: %s, %i - % 3i\n",
+                        category.index - 1,
+                        subcategory.index - 0.1,
+                        category.subcategories[n - 1],
+                        i - 1,
+                        exercise.tries
+                    )
+                    */
+                }
+                e += 1
+            }
+            s += 1
+        }
+        c += 1
+        s = 0
+        e = 0
+    }
+}
+
 print_single :: proc(category: Category) {
     // Print the category like a TOTAL
     percentage: f32
@@ -67,6 +100,10 @@ print_single :: proc(category: Category) {
         // 'print_subcategory' returns a boolean for early break
         print_subcategory(category.subcategories[i])
     }
+}
+
+print_single_failed :: proc(category: Category) {
+    fmt.printf("SINGLE FAILED")
 }
 
 print_category :: proc(category: Category) {
