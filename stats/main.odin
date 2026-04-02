@@ -89,7 +89,7 @@ main :: proc() {
         tokens := strings.split(line, " ")
 
         _, is_number := strconv.parse_uint(tokens[0])
-        
+
         // Category
         if tokens[0] == "=" {
             // Get name

@@ -1,10 +1,10 @@
 // This is an example stats file.
 
-= Category
-== 10 Subcategory // This subcategory has 10 exercises
-1 0.00 1.00 // Exercise 1 with 2 tries: one with 0 points and second with full points.
+= 1 Category
+== 3 1.1 Subcategory // This subcategory has 10 exercises
+1 0.00 1.00
 2 1.00
 3 0.67
 
-== 20 Another subcategory // This subcategory has 20 exercises
+== 5 1.2 Another subcategory // This subcategory has 20 exercises
 11 0.50 1.00
