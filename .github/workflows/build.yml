@@ -46,7 +46,7 @@ jobs:
                   release: dev-2026-03
 
             - name: Build for ${{ matrix.target }}
-              run: odin build stats -target:${{ matrix.target }} -o:size
+              run: odin build stats -target:${{ matrix.target }}
               working-directory: .
 
             - name: Debug - List files
