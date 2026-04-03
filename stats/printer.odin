@@ -4,7 +4,7 @@ import "core:fmt"
 import "core:os"
 import "core:strings"
 
-print_all :: proc(categories: [dynamic]Category) {
+print_all :: proc(categories: [dynamic]^Category) {
     fmt.printf("[% 4i / % 4i (% 3i) = % 5.2f %%]: %s - %1.2f / %i\n",
         variables[VARIABLES.FINISHED],
         variables[VARIABLES.TOTAL],
@@ -23,13 +23,13 @@ print_all :: proc(categories: [dynamic]Category) {
             fmt.printf("├──  ")
         }
 
-        print_category(category)
+        print_category(category^)
 
         i += 1
     }
 }
 
-print_all_failed :: proc(categories: [dynamic]Category)
+print_all_failed :: proc(categories: [dynamic]^Category)
 {
     failed: bool
     for category_index := 0; category_index < len(categories); category_index += 1 {

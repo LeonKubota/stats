@@ -1,0 +1,65 @@
+name: Build Multi-Platform
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                include:
+                    - os: windows-latest
+                      artifact-name: stats-windows.exe
+                      output: stats.exe
+                      binary: stats.exe
+
+                    - os: ubuntu-latest
+                      artifact-name: stats-linux
+                      output: stats.bin
+                      binary: stats.bin
+
+                    - os: macos-latest
+                      artifact-name: stats-macos
+                      output: stats.bin
+                      binary: stats.bin
+
+        runs-on: ${{ matrix.os }}
+
+        permissions:
+            contents: read
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Install Odin
+              uses: laytan/setup-odin@v2
+              with:
+                  release: dev-2026-03
+
+            - name: Build
+              run: odin build stats
+              working-directory: .
+
+            - name: Test binary (Windows)
+              if: matrix.os == 'windows-latest'
+              run: |
+                  .\${{ matrix.binary }} help
+                  .\${{ matrix.binary }} version
+                  .\${{ matrix.binary }} example.stat
+              continue-on-error: true
+
+            - name: Test binary (Unix)
+              if: matrix.os != 'windows-latest'
+              run: |
+                  ./${{ matrix.binary }} help
+                  ./${{ matrix.binary }} version
+                  ./${{ matrix.binary }} example.stat
+              continue-on-error: true
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v7
+              with:
+                  name: ${{ matrix.artifact-name }}
+                  path: ${{ matrix.binary }}
