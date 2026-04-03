@@ -94,6 +94,13 @@ print_help :: proc() {
     fmt.printf("\tDDD\t\ttotal exercises\n")
     fmt.printf("\tEEE\t\ttotal tries\n")
     fmt.printf("\tFF\t\tindex\n")
+
+    print_bold("\nwarning: ")
+    fmt.printf("stats might include shitty code. Make a Github issue if you find one. Thanks!\n")
+}
+
+print_version :: proc() {
+    fmt.println("stats version 0.0.0")
 }
 
 print_bold :: proc(input: string) {

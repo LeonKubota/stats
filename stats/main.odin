@@ -49,14 +49,18 @@ Exercise :: struct{
     tries: u8,
 }
 
-winsize :: struct{
-    ws_row: u16,
-    ws_col: u16,
-    ws_xpixel: u16,
-    ws_ypixel: u16,
-}
-
 main :: proc() {
+    // Special cases (help, version)
+    if len(os.args) >= 2 {
+        if os.args[1] == "help" {
+            print_help()
+            return
+        } else if os.args[1] == "version" {
+            print_version()
+            return
+        }
+    }
+
     // Parse input arguments:
     options: Options
     if !parse_console(&options) {
