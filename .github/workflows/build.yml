@@ -47,12 +47,18 @@ jobs:
                   ls -la | grep -E "(stats|\.exe|\.bin)" || echo "No matching files found"
               shell: bash
 
-            - name: Test Windows binary
-              if: matrix.os == 'windows-latest'
+            - name: Test binary
               run: |
-                  .\stats.exe help
-                  .\stats.exe version
-                  .\stats.exe example.stat
+                  if [ -f stats.exe ]; then
+                    .\stats.exe help
+                    .\stats.exe version
+                    .\stats.exe example.stat
+                  elif [ -f stats ]; then
+                    ./stats help
+                    ./stats version
+                    ./stats example.stat
+                  fi
+              shell: bash
               continue-on-error: true
 
             - name: Upload artifact
