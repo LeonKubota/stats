@@ -51,7 +51,7 @@ jobs:
             - name: Install Odin
               uses: laytan/setup-odin@v2
               with:
-                  release: 2026-03
+                  release: dev-2026-03
 
             - name: Build for ${{ matrix.target }}
               run: odin build stats -target:${{ matrix.target }} -o:size
