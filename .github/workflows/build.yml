@@ -22,8 +22,8 @@ jobs:
 
                     - os: macos-latest
                       artifact-name: stats-macos
-                      output: stats
-                      binary: stats
+                      output: stats.bin
+                      binary: stats.bin
 
         runs-on: ${{ matrix.os }}
 
