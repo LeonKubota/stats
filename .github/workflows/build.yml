@@ -53,9 +53,9 @@ jobs:
             - name: Test binary (Windows)
               if: matrix.os == 'windows-latest'
               run: |
-                  .${{ matrix.binary }} help
-                  .${{ matrix.binary }} version
-                  .${{ matrix.binary }} example.stat
+                  .\${{ matrix.binary }} help
+                  .\${{ matrix.binary }} version
+                  .\${{ matrix.binary }} example.stat
               continue-on-error: true
 
             - name: Test binary (Unix)
