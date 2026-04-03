@@ -1,0 +1,61 @@
+name: Build Multi-Platform
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                include:
+                    # Windows
+                    - os: windows-latest
+                      target: windows_amd64
+                      artifact-name: stats-windows-x86.exe
+                      output: stats.exe
+                    - os: windows-latest
+                      target: windows_arm64
+                      artifact-name: stats-windows-arm.exe
+                      output: stats.exe
+
+                    # Linux
+                    - os: ubuntu-latest
+                      target: linux_amd64
+                      artifact-name: stats-linux-x86
+                      output: stats
+                    - os: ubuntu-latest
+                      target: linux_arm64
+                      artifact-name: stats-linux-arm
+                      output: stats
+
+                    # macOS
+                    - os: macos-latest
+                      target: darwin_amd64
+                      artifact-name: stats-macos-x86
+                      output: stats
+                    - os: macos-latest
+                      target: darwin_arm64
+                      artifact-name: stats-macos-arm
+                      output: stats
+
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Odin
+              uses: laytan/setup-odin@v2
+              with:
+                  release: 2026-03
+
+            - name: Build for ${{ matrix.target }}
+              run: odin build stats -target:${{ matrix.target }} -o:size
+              working-directory: .
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ matrix.artifact-name }}
+                  path: ${{ matrix.output }}
