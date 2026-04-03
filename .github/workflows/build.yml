@@ -49,6 +49,21 @@ jobs:
               run: odin build stats -target:${{ matrix.target }} -o:size
               working-directory: .
 
+            - name: Debug - List files
+              run: |
+                  if [ -f stats ]; then echo "Found: stats"; fi
+                  if [ -f stats.exe ]; then echo "Found: stats.exe"; fi
+                  if [ -f stats.bin ]; then echo "Found: stats.bin"; fi
+                  ls -la | grep -E "(stats|\.exe|\.bin)" || echo "No matching files found"
+              shell: bash
+
+            - name: Test Windows binary
+              if: matrix.os == 'windows-latest'
+              run: |
+                  .\stats.exe help
+                  .\stats.exe version
+              continue-on-error: true
+
             - name: Upload artifact
               uses: actions/upload-artifact@v7
               with:
