@@ -1,12 +1,11 @@
 build:
-	@odin build stats
-	@echo "Ignore the stack overflow warnings!!"
+	odin build stats
 
 proper:
-	@odin build stats -o:size -ignore-warnings
+	odin build stats -o:size -ignore-warnings
 
 test:
-	@odin test stats -keep-executable
+	odin test stats -keep-executable
 
 .PHONY: clean
 clean:

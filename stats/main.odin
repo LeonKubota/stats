@@ -78,11 +78,11 @@ main :: proc() {
 
     lines := string(data)
 
-    categories: [dynamic]Category
+    categories: [dynamic]^Category
 
-    category: Category
-    subcategory: Subcategory
-    exercise: Exercise
+    category := new(Category)
+    subcategory := new(Subcategory)
+    exercise := new(Exercise)
 
     category_index: u8
     subcategory_index: u8
@@ -101,12 +101,15 @@ main :: proc() {
             category.index = category_index + 1
 
             append(&categories, category)
-            category_index += 1
+
+            category = new(Category)
+
             subcategory_index = 0
 
-            category.total_exercises = 0
-            category.began_exercises = 0
+            categories[category_index].total_exercises = 0
+            categories[category_index].began_exercises = 0
 
+            category_index += 1
         // Subcategory
         } else if tokens[0] == "==" {
             categories[category_index - 1].subcategories[subcategory_index].total_exercises = 0
@@ -123,7 +126,7 @@ main :: proc() {
                 return
             }
 
-            categories[category_index - 1].subcategories[subcategory_index] = subcategory
+            categories[category_index - 1].subcategories[subcategory_index] = subcategory^
 
             // Total exercises
             total_exercises, ok := strconv.parse_uint(tokens[1])
@@ -138,9 +141,9 @@ main :: proc() {
             variables[VARIABLES.TOTAL] += u16(total_exercises)
 
             subcategory_index += 1
-            exercise = Exercise{ score = 0.0, tries = 0 }
+            exercise^ = Exercise{ score = 0.0, tries = 0 }
             for i: u8; i < 255; i += 1 {
-                subcategory.exercises[i] = exercise
+                subcategory.exercises[i] = exercise^
             }
 
         // Subcategory link
@@ -168,11 +171,11 @@ main :: proc() {
 
             if found {
                 // Copy over the data
-                subcategory = linked_subcategory
+                subcategory^ = linked_subcategory
                 subcategory.is_copy = true
 
                 // Add it to a category
-                categories[category_index - 1].subcategories[subcategory_index] = subcategory
+                categories[category_index - 1].subcategories[subcategory_index] = subcategory^
 
                 // Copy data to parent category
                 categories[category_index - 1].total_tries += u16(subcategory.total_tries)              // Total tries
@@ -187,9 +190,9 @@ main :: proc() {
                 categories[category_index - 1].contains_copy = true
 
                 subcategory_index += 1
-                exercise = Exercise{ score = 0.0, tries = 0 }
+                exercise^ = Exercise{ score = 0.0, tries = 0 }
                 for i: u8; i < 255; i += 1 {
-                    subcategory.exercises[i] = exercise
+                    subcategory.exercises[i] = exercise^
                 }
             } else {
                 // Did not find a linked subcategory
@@ -252,7 +255,7 @@ main :: proc() {
                 fmt.println("category of index `%i` does not exist.\n", options.c)
                 return
             }
-            print_single_failed(categories[options.category + options.c - 1])
+            print_single_failed(categories[options.category + options.c - 1]^)
         }
     } else { // Print all
         if options.category == 0 && options.c == 0 {
@@ -268,7 +271,7 @@ main :: proc() {
                 fmt.printf("category of index `%i` does not exist.\n", options.c)
                 return
             }
-            print_single(categories[options.category + options.c - 1]) // -1 for "human" indexing
+            print_single(categories[options.category + options.c - 1]^) // -1 for "human" indexing
         }
     }
 }
