@@ -259,7 +259,7 @@ main :: proc() {
         }
     } else { // Print all
         if options.category == 0 && options.c == 0 {
-            print_all(categories)
+            print_all(categories, options.target)
         } else {
             // If category doesn't exist
             if options.category > len(categories) {

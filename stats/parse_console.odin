@@ -12,7 +12,8 @@ Options :: struct{
     _: string `args:"pos=0"`,
     file: ^os.File `args:"pos=1,required,file=r" usage:"Input file."`,
     c, category: int `usage:"Print a specific category."`,
-    f, failed: bool `usage:"Show failed exercises."`
+    f, failed: bool `usage:"Show failed exercises."`,
+    t, target: int `usage:"Target completion."`,
     // overflow: [dynamic]string
 }
 
@@ -74,13 +75,25 @@ verify :: proc(options: ^Options) -> bool {
         fmt.printf("option not yet implemented, results may vary.\n")
     }
 
+    // Target
+    options.target = max(options.t, options.target)
+    if options.target > 100 || options.target < 0 {
+        print_bold("error: ")
+        fmt.printf("target out of bounds, please select 0 to 100%%.\n")
+        return false
+    }
+
     return true
 }
 
 print_help :: proc() {
     fmt.println("usage: stats <file> [-c:int][-f:bool]")
 
-    fmt.printf("options: \n\tc, category\tspecify a category to print.\n\tf, failed\tshow failed exercises.\n")
+    fmt.printf("options: \n"+
+        "\tc, category\tspecify a category to print.\n"+
+        "\tf, failed\tshow failed exercises.\n"+
+        "\tt, target\tset the target completion\n"
+    )
 
     fmt.printf("output:\n")
     fmt.printf("└── ?")

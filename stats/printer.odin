@@ -4,8 +4,8 @@ import "core:fmt"
 import "core:os"
 import "core:strings"
 
-print_all :: proc(categories: [dynamic]^Category) {
-    fmt.printf("[% 4i / % 4i (% 3i) = % 5.2f %%]: %s - %1.2f / %i\n",
+print_all :: proc(categories: [dynamic]^Category, target: int) {
+    fmt.printf("[% 4i / % 4i (% 3i) = % 5.2f%%]: %s - %1.2f / %i\n",
         variables[VARIABLES.FINISHED],
         variables[VARIABLES.TOTAL],
         variables[VARIABLES.TRIES],
@@ -23,7 +23,7 @@ print_all :: proc(categories: [dynamic]^Category) {
             fmt.printf("├──  ")
         }
 
-        print_category(category)
+        print_category(category, target)
 
         i += 1
     }
@@ -71,7 +71,7 @@ print_single :: proc(category: Category) {
         average_score = category.total_score / f32(category.began_exercises)
     }
 
-    fmt.printf("[% 4i / % 4i (% 3i) = % 5.2f %%]: % 2i - %s - %1.2f / %i\n",
+    fmt.printf("[% 4i / % 4i (% 3i) = % 5.2f%%]: % 2i - %s - %1.2f / %i\n",
         category.finished_exercises,
         category.total_exercises,
         category.total_tries,
@@ -99,7 +99,7 @@ print_single_failed :: proc(category: Category) {
     fmt.printf("SINGLE FAILED")
 }
 
-print_category :: proc(category: ^Category) {
+print_category :: proc(category: ^Category, target: int) {
     // Get completion percentage
     percentage: f32
     if category.total_exercises == 0 {
@@ -110,7 +110,11 @@ print_category :: proc(category: ^Category) {
     }
 
     // Print star for finished exercises
-    if percentage == 100 && u16(category.total_score) == category.total_exercises { fmt.printf("\b*") }
+    if target != 0 {
+        if int(percentage) >= target { fmt.printf("\b*") }
+    } else {
+        if percentage == 100 && u16(category.total_score) == category.total_exercises { fmt.printf("\b*") }
+    }
 
     // Print '>' to show that the category contains a link
     if category.contains_copy { fmt.printf("\b^") }
