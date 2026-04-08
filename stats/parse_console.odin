@@ -63,7 +63,7 @@ parse_console :: proc(options: ^Options) -> bool {
 verify :: proc(options: ^Options) -> bool {
     // Incorrect file extension
     _, extension := os.split_filename(os.name(options.file))
-    if extension != "stat" {
+    if extension != "stats" {
         print_bold("error: ")
         fmt.printf("incorrect file extension: `.%s`.\n", extension)
         return false
