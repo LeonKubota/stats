@@ -271,7 +271,7 @@ main :: proc() {
                 fmt.printf("category of index `%i` does not exist.\n", options.c)
                 return
             }
-            print_single(categories[options.category + options.c - 1]^) // -1 for "human" indexing
+            print_single(categories[options.category + options.c - 1]^, options.target) // -1 for "human" indexing
         }
     }
 }

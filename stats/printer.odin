@@ -55,7 +55,7 @@ print_all_failed :: proc(categories: [dynamic]^Category)
     }
 }
 
-print_single :: proc(category: Category) {
+print_single :: proc(category: Category, target: int) {
     // Print the category like a TOTAL
     percentage: f32
     if category.total_exercises == 0 {
@@ -91,7 +91,7 @@ print_single :: proc(category: Category) {
         }
 
         // 'print_subcategory' returns a boolean for early break
-        print_subcategory(category.subcategories[i])
+        print_subcategory(category.subcategories[i], target)
     }
 }
 
@@ -139,7 +139,7 @@ print_category :: proc(category: ^Category, target: int) {
     )
 }
 
-print_subcategory :: proc(subcategory: Subcategory) {
+print_subcategory :: proc(subcategory: Subcategory, target: int) {
     if subcategory.is_copy {
         //fmt.printf("\bl")
     }
@@ -149,6 +149,13 @@ print_subcategory :: proc(subcategory: Subcategory) {
         percentage = 100
     } else {
         percentage = f32(subcategory.finished_exercises) / f32(subcategory.total_exercises) * 100
+    }
+
+    // Print star for finished exercises
+    if target != 0 {
+        if int(percentage) >= target { fmt.printf("\b*") }
+    } else {
+        if percentage == 100 && u8(subcategory.total_score) == subcategory.total_exercises { fmt.printf("\b*") }
     }
 
     average_score: f32
